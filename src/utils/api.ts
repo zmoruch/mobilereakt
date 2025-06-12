@@ -17,7 +17,8 @@ export interface Note {
   created_at?: string;
 }
 
-export interface ApiResponse<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
   message?: T;
@@ -67,14 +68,16 @@ export class ApiService {
     return this.request<T>(endpoint, { method: 'GET' });
   }
 
-  static async post<T>(endpoint: string, data: Record<string, unknown>): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static async post<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  static async put<T>(endpoint: string, data: Record<string, unknown>): Promise<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static async put<T>(endpoint: string, data: any): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
