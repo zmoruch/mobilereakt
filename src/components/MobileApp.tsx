@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Home, MessageCircle, Notebook, Mic, MoreHorizontal, Send, X, Plus, Trash2 } from 'lucide-react';
 
 interface ChatMessage {

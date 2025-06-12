@@ -17,10 +17,10 @@ export interface Note {
   created_at?: string;
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   success: boolean;
   data?: T;
-  message?: string;
+  message?: T;
   error?: string;
 }
 
@@ -67,14 +67,14 @@ export class ApiService {
     return this.request<T>(endpoint, { method: 'GET' });
   }
 
-  static async post<T>(endpoint: string, data: any): Promise<T> {
+  static async post<T>(endpoint: string, data: Record<string, unknown>): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  static async put<T>(endpoint: string, data: any): Promise<T> {
+  static async put<T>(endpoint: string, data: Record<string, unknown>): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -104,8 +104,8 @@ export const messagesApi = {
     try {
       const response = await ApiService.post<ApiResponse<Message>>('messages', messageData);
       
-      if (response.success && response.message) {
-        return response.message;
+      if (response.success && response.data) {
+        return response.data;
       }
       
       // Fallback - utwórz wiadomość lokalnie jeśli API nie zwróci
@@ -163,8 +163,8 @@ export const notesApi = {
     try {
       const response = await ApiService.post<ApiResponse<Note>>('notes', noteData);
       
-      if (response.success && response.note) {
-        return response.note;
+      if (response.success && response.data) {
+        return response.data;
       }
       
       // Fallback - utwórz notatkę lokalnie
@@ -190,7 +190,7 @@ export const notesApi = {
   update: async (id: number, noteData: Partial<Note>): Promise<Note | null> => {
     try {
       const response = await ApiService.put<ApiResponse<Note>>(`notes/${id}`, noteData);
-      return response.success && response.note ? response.note : null;
+      return response.success && response.data ? response.data : null;
     } catch (error) {
       console.error('Błąd aktualizacji notatki:', error);
       return null;
